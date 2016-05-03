@@ -16,10 +16,10 @@
 // with this program. If not, see <http://www.gnu.org/licenses/>.
 
 wt = 2; // Wall thickness
-vent_t = 2; // Vent hole thickness
+vent_t = 3; // Vent hole thickness
 
-psu_w = 49;  // PSU Width
-psu_h = 99;    // PSU Height 
+psu_w = 48.5;  // PSU Width
+psu_h = 99.5;  // PSU Height 
 cover_l = 30;  // Cover Length
 cover_ml = 20; // Mount length. Length of a psu to disappear in cover
 connector_l = 22; // Length of a connector compartment
@@ -28,7 +28,7 @@ module psu_connector(){
   difference(){
     cube([27.8,19.8,10],center=true);
     translate([7.5,19.8/2,-10]) rotate([0,0,-45]) cube([20,20,20]);
-	translate([-7.5,19.8/2,-10]) rotate([0,0,135]) cube([20,20,20]);
+        translate([-7.5,19.8/2,-10]) rotate([0,0,135]) cube([20,20,20]);
   }
   // Screw holes
   translate([20,0,0]) cylinder(r=1.2,h=20,$fn=16,center=true);
@@ -57,15 +57,16 @@ module box_cuts() {
             cube(size = [2*wt, cover_ml+0.1, psu_w - 10], center = false);
         // Vent holes
         for (a =[0: (psu_h - wt - 2 - connector_l)/(2*vent_t)]){
-            translate([ connector_l + wt + 1 + a * 2 * vent_t , 0, 2*wt])
-                cube(size = [vent_t, cover_l + 0.1 , psu_w - 2*wt], center = false);
+            translate([ connector_l + 3*wt + 1 + a * 2 * vent_t , 0, 5*wt])
+                cube(size = [vent_t / 3, cover_l + 0.1 , psu_w - 8 * wt], center = false);
+
         };
 
         // PSU Connector
         translate([wt+10, cover_l, wt+psu_w/2])
             rotate(a=[90,90,0])
                 psu_connector();
-        
+
         // Switch hole
         translate([connector_l+2*wt+12,cover_l-15,psu_w]) rotate([0,0,0]) switch();
     }
