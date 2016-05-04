@@ -74,7 +74,7 @@ module box_cuts() {
         };
 
         // PSU Connector
-        translate([0, connector_w/2-(connector_w - cover_l), wt+10])
+        translate([0, connector_w/2-(connector_w - cover_l), psu_w-10 + wt])
             rotate(a=[90,0,90])
                 psu_connector();
 
