@@ -15,7 +15,7 @@
 // You should have received a copy of the  GNU General Public License  along
 // with this program. If not, see <http://www.gnu.org/licenses/>.
 
-wt = 2; // Wall thickness
+wt = 2.5; // Wall thickness
 vent_t = 3; // Vent hole thickness
 
 psu_w = 48.5;  // PSU Width
@@ -29,8 +29,8 @@ connector_w = 50; // Width of a connector compartment (length of the l part)
 module psu_connector(){
   difference(){
     cube([27.8,19.8,10],center=true);
-    translate([7.5,19.8/2,-10]) rotate([0,0,-45]) cube([20,20,20]);
-        translate([-7.5,19.8/2,-10]) rotate([0,0,135]) cube([20,20,20]);
+    translate([8,19.8/2,-10]) rotate([0,0,-45]) cube([20,20,20]);
+        translate([-8,19.8/2,-10]) rotate([0,0,135]) cube([20,20,20]);
   }
   // Screw holes
   translate([20,0,0]) cylinder(r=1.2,h=20,$fn=16,center=true);
