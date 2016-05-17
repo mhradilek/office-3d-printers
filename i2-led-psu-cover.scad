@@ -18,8 +18,8 @@
 wt = 2.5; // Wall thickness
 vent_t = 3; // Vent hole thickness
 
-psu_w = 48.5;  // PSU Width
-psu_h = 99.5;  // PSU Height 
+psu_w = 49.0;  // PSU Width
+psu_h = 99.5;  // PSU Height
 cover_l = 30;  // Cover Length
 cover_ml = 20; // Mount length. Length of a psu to disappear in cover
 connector_l = 22; // Length of a connector compartment
@@ -29,8 +29,8 @@ connector_w = 50; // Width of a connector compartment (length of the l part)
 module psu_connector(){
   difference(){
     cube([27.8,19.8,10],center=true);
-    translate([8,19.8/2,-10]) rotate([0,0,-45]) cube([20,20,20]);
-        translate([-8,19.8/2,-10]) rotate([0,0,135]) cube([20,20,20]);
+    translate([8.5,19.8/2,-10]) rotate([0,0,-45]) cube([20,20,20]);
+        translate([-8.5,19.8/2,-10]) rotate([0,0,135]) cube([20,20,20]);
   }
   // Screw holes
   translate([20,0,0]) cylinder(r=1.2,h=20,$fn=16,center=true);
