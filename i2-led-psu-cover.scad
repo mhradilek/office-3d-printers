@@ -23,8 +23,6 @@ psu_h = 99.5;  // PSU Height
 cover_l = 30;  // Cover Length
 cover_ml = 20; // Mount length. Length of a psu to disappear in cover
 connector_l = 22; // Length of a connector compartment
-connector_w = 50; // Width of a connector compartment (length of the l part)
-
 
 module psu_connector(){
   difference(){
@@ -38,70 +36,50 @@ module psu_connector(){
 }
 
 module switch(){
-    cube([19.2,13,10],center=true);
+    cube([19.2,13,20],center=true);
 }
 
 module box_cuts() {
     difference() {
-        // Outside L shape
-        union() {
-            // Outside cuboid
-            cube(size = [psu_h + 2*wt + connector_l, cover_l, psu_w + 2*wt], center = false);
-            // Switch compartent cuboid
-            translate([0,-(connector_w-cover_l),0]) cube(size = [connector_l+wt, connector_w - cover_l, psu_w + 2*wt], center = false);
-        }
+        // Outside cuboid
+        cube(size = [psu_h + 2*wt, cover_l, psu_w + 2*wt], center = false);
         // PSU sized cuboid
-        translate([wt + connector_l, -0.1, wt])
+        translate([wt, -0.1, wt])
             cube(size = [psu_h, cover_ml+0.1, psu_w], center = false);
         // Inside compartment cuboid
-        translate([wt + connector_l + 1, -0.1, wt+1])
+        translate([wt + 1, -0.1, wt+1])
             cube(size = [psu_h - 2, cover_l - wt + 0.1, psu_w - 2], center = false);
-        // Inside compartment for connector
-        translate([wt, -(connector_w-cover_l+wt), wt]) {
-            // Cuboid cutting compartment in L part
-            cube(size = [connector_l - 2, connector_w, psu_w], center = false);
-            // Cuboid opening one side in overhanging L part
-            cube(size = [connector_l + 0.1, connector_w - cover_l +wt, psu_w], center = false);
-        }
-        // Hole between compartments
-        translate([connector_l - wt/2, -0.1, wt + 3])
-            cube(size = [2*wt, cover_ml+0.1, psu_w - 6], center = false);
         // Vent holes
-        for (a =[0: (psu_h - wt - 2 - connector_l)/(2*vent_t)]){
-            translate([ connector_l + 3*wt + 1 + a * 2 * vent_t , 0, 5*wt])
+        for (a =[0: (psu_h - wt - 2)/(2*vent_t)]){
+            translate([3*wt + 1 + a * 2 * vent_t , 0, 5*wt])
                 cube(size = [vent_t / 3, cover_l + 0.1 , psu_w - 8 * wt], center = false);
-
         };
-
-        // PSU Connector
-        translate([0, connector_w/2-(connector_w - cover_l), psu_w-10 + wt])
-            rotate(a=[90,0,90])
-                psu_connector();
+        // Connector box hole
+        translate([wt, wt, psu_w])
+            cube(size = [55 - 2 * wt, cover_l - 5 * wt, connector_l]);
 
         // Switch hole
-        translate([connector_l+2*wt+12,cover_l-15,psu_w]) rotate([0,0,0]) switch();
+        translate([2*wt+70, cover_l-15, psu_w]) rotate([0,0,0]) switch();
+    }
+}
+
+module connector_box() {
+    difference() {
+        translate([0, 0, psu_w + 2 * wt])
+            cube(size = [55, cover_l, connector_l + wt]);
+        translate([wt, wt, psu_w + 1 * wt])
+            cube(size = [55 - 2 * wt, cover_l - 2* wt, connector_l + wt]);
+        // PSU Connector
+        translate([2 * wt + 22, cover_l, psu_w + 15])
+            rotate(a=[90,0,0])
+                psu_connector();
     }
 }
 
 module psu_cover() {
     box_cuts();
-}
-
-// Opening cover
-module compartment_cover() {
-    union() {
-        // Front plate
-        cube(size = [wt + connector_l, wt, psu_w + 2*wt], center = false);
-        // Inserts
-        translate([wt, wt, wt])
-            cube(size = [connector_l-wt, 5, wt], center = false);
-        translate([wt, wt, psu_w - wt])
-            cube(size = [connector_l-wt, 5, wt], center = false);
-    }
+    connector_box();
 }
 
 translate([0, 0, cover_l]) rotate([-90,0,0])
     psu_cover();
-
-translate([0, -(connector_w-cover_l+wt+5), 0]) rotate([90,0,90])
-    compartment_cover();
