@@ -1,5 +1,6 @@
 // Cover for 12V 240W LED PSU with only 2 sides open
 // Copyright (C) 2016 Miroslav Hradílek
+// i2 mod and few minor updates by Jaroslav Škarvada <jskarvad@redhat.com>
 // Connector code by Martin Neruda <neruda@reprap4u.cz> taken from
 // project https://github.com/RepRap4U/RebeliX
 
